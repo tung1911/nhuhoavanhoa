@@ -7,11 +7,25 @@ const RecognitionSendAnimation = ({ isPlaying, targetRef, onComplete }) => {
   const [targetPos, setTargetPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    if (isPlaying && targetRef?.current) {
-      const rect = targetRef.current.getBoundingClientRect();
-      const targetX = rect.left + rect.width / 2 - window.innerWidth / 2;
-      const targetY = rect.top + rect.height / 2 - window.innerHeight / 2;
-      setTargetPos({ x: targetX, y: targetY });
+    if (isPlaying) {
+      const targets = document.querySelectorAll('.target-love-storage-icon');
+      let visibleTarget = null;
+      for (const target of targets) {
+        const rect = target.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          visibleTarget = target;
+          break;
+        }
+      }
+
+      if (visibleTarget) {
+        const rect = visibleTarget.getBoundingClientRect();
+        const targetX = rect.left + rect.width / 2 - window.innerWidth / 2;
+        const targetY = rect.top + rect.height / 2 - window.innerHeight / 2;
+        setTargetPos({ x: targetX, y: targetY });
+      } else {
+        setTargetPos({ x: 0, y: 0 }); // Fallback
+      }
 
       // Bắt đầu sequence
       setAnimationState('show-card');

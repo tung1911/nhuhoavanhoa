@@ -126,12 +126,13 @@ const Recognition = () => {
   const handleAnimationComplete = () => {
     setIsSendAnimationPlaying(false);
     
-    if (loveStorageMenuRef?.current) {
-      loveStorageMenuRef.current.classList.add('love-storage-glow');
+    const targets = document.querySelectorAll('.target-love-storage-icon');
+    targets.forEach(target => {
+      target.classList.add('love-storage-glow');
       setTimeout(() => {
-        loveStorageMenuRef.current?.classList.remove('love-storage-glow');
+        target.classList.remove('love-storage-glow');
       }, 600);
-    }
+    });
 
     const randomQuote = recognitionQuotes[Math.floor(Math.random() * recognitionQuotes.length)];
     setCurrentQuote(randomQuote);

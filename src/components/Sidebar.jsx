@@ -61,9 +61,9 @@ const Sidebar = ({ loveStorageMenuRef }) => {
           <NavLink
             key={item.path}
             to={item.path}
-            ref={item.ref}
             className={({ isActive }) => clsx(
               "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+              item.path === '/kho-yeu-thuong' ? 'target-love-storage-icon' : '',
               isActive 
                 ? "bg-primary/10 text-primary" 
                 : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"

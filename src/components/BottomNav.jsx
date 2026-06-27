@@ -42,9 +42,9 @@ const BottomNav = ({ loveStorageMenuRef }) => {
         <NavLink
           key={item.path}
           to={item.path}
-          ref={item.ref}
           className={({ isActive }) => clsx(
             "flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors",
+            item.path === '/kho-yeu-thuong' ? 'target-love-storage-icon' : '',
             isActive 
               ? "text-primary" 
               : "text-slate-500 hover:text-slate-900"
