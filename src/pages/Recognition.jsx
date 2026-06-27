@@ -115,8 +115,8 @@ const Recognition = () => {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Lỗi",
-        description: 'Có lỗi xảy ra khi gửi. Vui lòng thử lại.',
+        title: "Lỗi kết nối (" + (error.message || "Unknown") + ")",
+        description: 'Vui lòng nhấn phím Ctrl + F5 (hoặc xóa lịch sử web) để tải lại bản vá lỗi mới nhất rồi thử lại!',
       });
       console.error(error);
       setIsSubmitting(false);
