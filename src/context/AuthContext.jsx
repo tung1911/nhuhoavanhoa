@@ -1,0 +1,28 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+const AuthContext = createContext(null);
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('khoYeuThuongUser');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  const login = (userData) => {
+    setUser(userData);
+    localStorage.setItem('khoYeuThuongUser', JSON.stringify(userData));
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('khoYeuThuongUser');
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);
