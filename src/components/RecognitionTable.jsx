@@ -3,6 +3,12 @@ import { cn } from '@/lib/utils';
 import { ArrowRight, Eye, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+const formatDateOnly = (dateStr) => {
+  if (!dateStr) return '';
+  if (dateStr.includes('T') && dateStr.endsWith('Z')) return new Date(dateStr).toLocaleDateString('vi-VN');
+  return dateStr.split(' ').find(p => p.includes('/')) || dateStr.split(' ')[0] || dateStr;
+};
+
 const valueColors = {
   'Nói được làm được': 'bg-core1/10 text-core1 border-core1/20',
   'Chân thật': 'bg-core2/10 text-core2 border-core2/20',
@@ -68,7 +74,7 @@ const RecognitionTable = ({ data, onSelectRow, selectedId }) => {
                 <td className="p-4">
                   <span className="text-sm text-muted-foreground flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5" />
-                    {item.timestamp}
+                    {formatDateOnly(item.date)}
                   </span>
                 </td>
                 <td className="p-4 text-right">

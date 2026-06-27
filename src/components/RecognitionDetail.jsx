@@ -3,6 +3,12 @@ import { X, Heart, Clock, User, ArrowRight, Quote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
+const formatDateOnly = (dateStr) => {
+  if (!dateStr) return '';
+  if (dateStr.includes('T') && dateStr.endsWith('Z')) return new Date(dateStr).toLocaleDateString('vi-VN');
+  return dateStr.split(' ').find(p => p.includes('/')) || dateStr.split(' ')[0] || dateStr;
+};
+
 const valueColors = {
   'Nói được làm được': 'bg-core1/10 text-core1 border-core1/20',
   'Chân thật': 'bg-core2/10 text-core2 border-core2/20',
@@ -82,7 +88,7 @@ const RecognitionDetail = ({ data, onClose }) => {
               <p className="text-xs font-semibold text-muted-foreground mb-1.5">Thời gian gửi</p>
               <span className="text-sm text-foreground flex items-center gap-1.5 justify-end">
                 <Clock className="w-4 h-4 text-muted-foreground" />
-                {data.timestamp}
+                {formatDateOnly(data.date)}
               </span>
             </div>
           </div>
