@@ -51,7 +51,7 @@ const Sidebar = ({ loveStorageMenuRef }) => {
   ];
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 flex flex-col shadow-sm">
+    <aside className="hidden md:flex w-64 bg-white border-r border-slate-200 flex-col shadow-sm">
       <div className="h-16 flex items-center px-6 border-b border-slate-100">
         <span className="font-bold text-lg text-[#005b9f] tracking-tight uppercase whitespace-nowrap">Thẩm mỹ Như Hoa</span>
       </div>
