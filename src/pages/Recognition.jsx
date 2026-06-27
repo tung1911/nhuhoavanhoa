@@ -101,9 +101,13 @@ const Recognition = () => {
         coreValue
       };
       
-      // Dùng fetch thay vì axios để tránh lỗi CORS Preflight của Google Apps Script
+      // Dùng fetch với mode: 'no-cors' để tránh lỗi CORS Preflight của Google Apps Script
       await fetch(API_URL, {
         method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
         body: JSON.stringify(payload)
       });
       
