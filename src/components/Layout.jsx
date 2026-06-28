@@ -18,8 +18,8 @@ const Layout = () => {
         <Header />
         
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 pb-32 md:pb-6 custom-scrollbar">
-          <div className="max-w-6xl mx-auto h-full">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar relative">
+          <div className="max-w-6xl mx-auto min-h-full pb-32 md:pb-6">
             <Outlet context={{ loveStorageMenuRef }} />
           </div>
         </main>
