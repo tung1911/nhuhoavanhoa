@@ -22,20 +22,29 @@ const LoveStorage = () => {
 
   useEffect(() => {
     fetchRecognitions();
+
+    // Tự động tải lại dữ liệu ngầm mỗi 10 giây để có real-time
+    const interval = setInterval(() => {
+      fetchRecognitions(false);
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  const fetchRecognitions = async () => {
+  const fetchRecognitions = async (showLoading = true) => {
     try {
-      setLoading(true);
-      const res = await fetch(API_URL);
+      if (showLoading) setLoading(true);
+      // Thêm tham số t để tránh tình trạng cache dữ liệu cũ của trình duyệt
+      const timestamp = new Date().getTime();
+      const res = await fetch(`${API_URL}?t=${timestamp}`, { cache: 'no-store' });
       const data = await res.json();
       setRecognitions(data || []);
-      setError(null);
+      if (showLoading) setError(null);
     } catch (err) {
       console.error(err);
-      setError('Không thể tải dữ liệu. Vui lòng kiểm tra kết nối.');
+      if (showLoading) setError('Không thể tải dữ liệu. Vui lòng kiểm tra kết nối.');
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   };
 
