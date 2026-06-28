@@ -150,7 +150,7 @@ const Recognition = () => {
       <div className="mb-8 border-b pb-6">
         <h2 className="text-2xl font-bold mb-2">Ghi nhận yêu thương</h2>
         <p className="text-muted-foreground">
-          Hành động nhỏ - Ý nghĩa lớn - Lan tỏa rộng
+          Hành động nhỏ - Lan tỏa rộng - Ý nghĩa lớn
         </p>
       </div>
 
