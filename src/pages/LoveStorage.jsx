@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { Search, Loader2 } from 'lucide-react';
 import RecognitionTable from '../components/RecognitionTable';
@@ -14,9 +14,14 @@ const LoveStorage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
+  // Lấy tháng hiện tại làm mặc định
+  const currentDate = new Date();
+  const currentMonthKey = `${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+
   // Filters
   const [searchReceiver, setSearchReceiver] = useState('');
   const [filterCoreValue, setFilterCoreValue] = useState('Tất cả');
+  const [filterMonth, setFilterMonth] = useState(currentMonthKey);
   
   const [selectedRecord, setSelectedRecord] = useState(null);
 
@@ -48,10 +53,45 @@ const LoveStorage = () => {
     }
   };
 
+  // Tạo danh sách các tháng từ dữ liệu
+  const availableMonths = useMemo(() => {
+    const months = new Set();
+    months.add(currentMonthKey);
+    
+    recognitions.forEach(item => {
+      // Dùng id (timestamp) để parse ngày tháng
+      if (item.id) {
+        const date = new Date(item.id);
+        const key = `${date.getMonth() + 1}/${date.getFullYear()}`;
+        months.add(key);
+      }
+    });
+    
+    // Sắp xếp tháng mới nhất lên đầu
+    return Array.from(months).sort((a, b) => {
+      const [mA, yA] = a.split('/').map(Number);
+      const [mB, yB] = b.split('/').map(Number);
+      if (yA !== yB) return yB - yA;
+      return mB - mA;
+    });
+  }, [recognitions, currentMonthKey]);
+
   const filteredData = recognitions.filter(item => {
     const matchReceiver = item.receiver.toLowerCase().includes(searchReceiver.toLowerCase());
     const matchValue = filterCoreValue === 'Tất cả' || item.coreValue === filterCoreValue;
-    return matchReceiver && matchValue;
+    
+    let matchMonth = true;
+    if (filterMonth !== 'Tất cả') {
+      if (item.id) {
+        const date = new Date(item.id);
+        const key = `${date.getMonth() + 1}/${date.getFullYear()}`;
+        matchMonth = (key === filterMonth);
+      } else {
+        matchMonth = false; // Bỏ qua nếu không có id hợp lệ
+      }
+    }
+
+    return matchReceiver && matchValue && matchMonth;
   });
 
   return (
@@ -90,6 +130,20 @@ const LoveStorage = () => {
               <SelectItem value="Tâm huyết">Tâm huyết</SelectItem>
               <SelectItem value="Khách hàng là số 1">Khách hàng là số 1</SelectItem>
               <SelectItem value="Đổi mới sáng tạo">Đổi mới sáng tạo</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="w-full md:w-48">
+          <Select value={filterMonth} onValueChange={setFilterMonth}>
+            <SelectTrigger>
+              <SelectValue placeholder="Chọn tháng" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Tất cả">Tất cả các tháng</SelectItem>
+              {availableMonths.map(month => (
+                <SelectItem key={month} value={month}>Tháng {month}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
