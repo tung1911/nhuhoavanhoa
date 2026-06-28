@@ -151,7 +151,7 @@ const LoveStorage = () => {
 
       {/* Main Content Area */}
       <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-6">
-        <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+        <div className={`flex-1 overflow-y-auto pr-2 custom-scrollbar ${selectedRecord ? 'hidden lg:block' : 'block'}`}>
           {loading ? (
             <div className="h-64 flex flex-col items-center justify-center text-muted-foreground">
               <Loader2 className="w-8 h-8 animate-spin mb-4" />
@@ -161,7 +161,7 @@ const LoveStorage = () => {
             <div className="bg-destructive/10 text-destructive p-4 rounded-xl text-center border border-destructive/20">
               {error}
               <button 
-                onClick={fetchRecognitions}
+                onClick={() => fetchRecognitions()}
                 className="block mx-auto mt-2 text-sm underline hover:text-destructive/80"
               >
                 Thử lại
@@ -176,7 +176,7 @@ const LoveStorage = () => {
           )}
         </div>
         
-        <div className="w-full lg:w-[400px] h-[400px] lg:h-auto flex-shrink-0">
+        <div className={`w-full lg:w-[400px] h-full lg:h-auto flex-shrink-0 ${!selectedRecord ? 'hidden lg:block' : 'block'}`}>
           <RecognitionDetail 
             data={selectedRecord} 
             onClose={() => setSelectedRecord(null)}
